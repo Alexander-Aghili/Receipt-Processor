@@ -4,6 +4,7 @@ from pdf_scanner_sysco import *
 from gmail import *
 from PIL import Image
 import glob, os
+import psutil
 
 # Function to replace the dates with MM/DD/YYYY format and convert YY to YYYY
 def replace_date(match):
@@ -19,7 +20,6 @@ def replace_date(match):
 def main():
 
     get_messages_from_sender()
-    return
 
     os.chdir("./")
     for file in glob.glob("*.pdf"):
@@ -32,14 +32,22 @@ def main():
                 img.show()
                 invoice = input("Invoice Number: ")
                 date = input("Date (MM/DD/YY): ")
-    
+                for proc in psutil.process_iter():
+                    if proc.name() == "display":
+                        proc.kill()
+                
         date_pattern = r'(\d{2}/\d{2}/\d{2}|\d{2}/\d{2}/\d{4})'
 
         date = re.sub(date_pattern, replace_date, date)
         os.remove(image)
         new_file_name = date + "-" + invoice + ".pdf"
-        print(new_file_name)
-        # os.rename(file, )
+        os.rename(file, new_file_name)
+
+    send_message()
+
+    for file in glob.glob("*.pdf"):
+        os.remove(file)
+
             
 if __name__ == "__main__":
     main()
