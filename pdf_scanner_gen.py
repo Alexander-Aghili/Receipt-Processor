@@ -46,10 +46,8 @@ def get_info(image: str):
     match = pattern.search(text)
 
     if match:
-        print(match.group(0))
         return check_for_info(text, data, match.group(0).lower())
     
-    print(image)
     return None, None
 
     

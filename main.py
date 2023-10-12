@@ -9,7 +9,6 @@ import pathlib
 # Function to replace the dates with MM/DD/YYYY format and convert YY to YYYY
 def replace_date(match):
     date_str = match.group()
-    print(date_str)
     parts = date_str.split('/')
     
     # Check if the year is YY format, and convert it to YYYY format
@@ -20,15 +19,15 @@ def replace_date(match):
 
 def main():
 
-    # get_messages_from_sender()
+    get_messages_from_sender()
 
     os.chdir("./")
     for file in glob.glob("*.pdf"):
         image = convert_pdf_to_image(file)
         invoice, date = get_info(image)
         if invoice is None or date is None:
-            bagel_invoice, bagel_invoicedate = get_info_bagel(image)
-            if bagel_invoice is None or date is None:
+            bagel_invoice, bagel_date = get_info_bagel(image)
+            if bagel_invoice is None or bagel_date is None:
                 img = Image.open(image)
                 img.show()
                 if invoice is None:
@@ -42,10 +41,10 @@ def main():
         os.remove(image)
         new_file_name = date + "-" + invoice + ".pdf"
         os.rename(file, new_file_name)
-    # send_message()
+    send_message()
 
-    # for file in glob.glob("*.pdf"):
-    #     os.remove(file)
+    for file in glob.glob("*.pdf"):
+        os.remove(file)
 
             
 if __name__ == "__main__":
