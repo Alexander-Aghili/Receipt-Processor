@@ -37,7 +37,6 @@ def get_info(image: str):
     config = ('-l eng --oem 3 --psm 6')
     text = pytesseract.image_to_string(Image.open(image), config=config)
     
-    print(text)
     f = open('./regex_key.json')
     data=json.load(f)
 
