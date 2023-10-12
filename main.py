@@ -1,14 +1,15 @@
 from pdf_image import *
 from pdf_scanner_bagel import *
 from pdf_scanner_sysco import *
+from pdf_scanner_gen import *
 from gmail import *
 from PIL import Image
 import glob, os
-import psutil
-
+import pathlib
 # Function to replace the dates with MM/DD/YYYY format and convert YY to YYYY
 def replace_date(match):
     date_str = match.group()
+    print(date_str)
     parts = date_str.split('/')
     
     # Check if the year is YY format, and convert it to YYYY format
@@ -19,34 +20,32 @@ def replace_date(match):
 
 def main():
 
-    get_messages_from_sender()
+    # get_messages_from_sender()
 
     os.chdir("./")
     for file in glob.glob("*.pdf"):
         image = convert_pdf_to_image(file)
-        invoice, date = get_info_sysco(image)
+        invoice, date = get_info(image)
         if invoice is None or date is None:
-            invoice, date = get_info_bagel(image)
-            if invoice is None or date is None:
+            bagel_invoice, bagel_invoicedate = get_info_bagel(image)
+            if bagel_invoice is None or date is None:
                 img = Image.open(image)
                 img.show()
-                invoice = input("Invoice Number: ")
-                date = input("Date (MM/DD/YY): ")
-                for proc in psutil.process_iter():
-                    if proc.name() == "display":
-                        proc.kill()
+                if invoice is None:
+                    invoice = input("Invoice Number: ")
+                if date is None:
+                    date = input("Date (MM/DD/YY): ")
                 
-        date_pattern = r'(\d{2}/\d{2}/\d{2}|\d{2}/\d{2}/\d{4})'
+        date_pattern = r'(\d{1,2}/\d{2}/\d{2}|\d{1,2}/\d{2}/\d{4})'
 
         date = re.sub(date_pattern, replace_date, date)
         os.remove(image)
         new_file_name = date + "-" + invoice + ".pdf"
         os.rename(file, new_file_name)
+    # send_message()
 
-    send_message()
-
-    for file in glob.glob("*.pdf"):
-        os.remove(file)
+    # for file in glob.glob("*.pdf"):
+    #     os.remove(file)
 
             
 if __name__ == "__main__":

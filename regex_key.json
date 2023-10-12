@@ -1,0 +1,15 @@
+{
+    "get_type": "(pepsi|sysco|bimbo|yerba|peerless|unfi)",
+    "sysco_regex_invoice": "\\d{6}\\s+(\\d{9})",
+    "sysco_regex_date": "\\b(\\d{1,2}/\\d{1,2}/\\d{2}(\\d{2})?)\\b",
+    "pepsi_regex_invoice": "# (\\d{8})",
+    "pepsi_regex_date": "(\\d{1,2}/\\d{1,2}/\\d{4})",
+    "bimbo_regex_invoice": "(\\d{14})",
+    "bimbo_regex_date": "(\\d{1,2}/\\d{1,2}/\\d{4})",
+    "unfi_regex_invoice": "(\\d{9}-\\d{3})",
+    "unfi_regex_date": "\\b(\\d{1,2}/\\d{1,2}/\\d{2}(\\d{2})?)\\b",
+    "yerba_regex_invoice":"(\\d{4}*-*\\d{5})",
+    "yerba_regex_date":"(\\d{1,2}/\\d{1,2}/\\d{4})",
+    "peerless_regex_invoice": "(INV\\d{7})",
+    "peerless_regex_date": "(\\d{1,2}/\\d{1,2}/\\d{4})"
+}
