@@ -8,7 +8,7 @@
     "bimbo_regex_date": "(\\d{1,2}/\\d{1,2}/\\d{4})",
     "unfi_regex_invoice": "(\\d{9}-\\d{3})",
     "unfi_regex_date": "\\b(\\d{1,2}/\\d{1,2}/\\d{2}(\\d{2})?)\\b",
-    "yerba_regex_invoice":"(\\d{4}*-*\\d{5})",
+    "yerba_regex_invoice":"(\\d{4}\\s+-\\s+\\d{5})",
     "yerba_regex_date":"(\\d{1,2}/\\d{1,2}/\\d{4})",
     "peerless_regex_invoice": "(INV\\d{7})",
     "peerless_regex_date": "(\\d{1,2}/\\d{1,2}/\\d{4})"

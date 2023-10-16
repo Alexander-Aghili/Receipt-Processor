@@ -12,7 +12,6 @@ from requests import HTTPError
 
 # Set the path to your credentials JSON file
 credentials_file = 'credentials.json'
-sender_email = "zlaclair@ucsc.edu"
 SCOPES = ['https://mail.google.com/']
 
 creds = None
@@ -34,7 +33,7 @@ if not creds or not creds.valid:
         token.write(creds.to_json())
 
 # Function to get all messages from a specific sender
-def get_messages_from_sender():
+def get_messages_from_sender(num_messages, sender_email="zlaclair@ucsc.edu"):
     try:
         # Use the Gmail API to search for messages from the specified sender
         service = build('gmail', 'v1', credentials=creds)
@@ -44,10 +43,16 @@ def get_messages_from_sender():
         if not messages:
             print('No messages found.')
         else:
-            print('Messages from {}:'.format(sender_email))
-            for message in messages:
-                msg = service.users().messages().get(userId='me', id=message['id']).execute()
-                for part in msg['payload']['parts']:
+            for i in range(len(messages)):
+                message = messages[i]
+                messages[i] = service.users().messages().get(userId='me', id=message['id']).execute()
+
+            messages=sorted(messages, key=lambda k: k['internalDate'], reverse=True)
+
+            for i in range(len(message)):
+                if i >= num_messages:
+                    break
+                for part in messages[i]['payload']['parts']:
                     if part['mimeType'] == 'application/pdf':
                         pdf = service.users().messages().attachments().get(userId='me', messageId=message['id'], id=part['body']['attachmentId']).execute()
                         file_data = base64.urlsafe_b64decode(pdf['data'].encode('UTF-8'))

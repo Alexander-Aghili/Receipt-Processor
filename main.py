@@ -1,14 +1,11 @@
 from pdf_image import *
 from pdf_scanner_bagel import *
-from pdf_scanner_sysco import *
 from pdf_scanner_gen import *
 from gmail import *
 from PIL import Image
 import glob, os
-import pathlib
 # Function to replace the dates with MM/DD/YYYY format and convert YY to YYYY
-def replace_date(match):
-    date_str = match.group()
+def replace_date(date_str):
     parts = date_str.split('/')
     
     # Check if the year is YY format, and convert it to YYYY format
@@ -17,9 +14,19 @@ def replace_date(match):
     
     return '.'.join(parts)
 
+def user_input():
+    # user = input("Please provide your email: ")
+    # receipt_email = input("Please provide receipt email: ")
+    user = "awaghili@ucsc.edu"
+    receipt_email="zlaclair@ucsc.edu"
+    num_messages = int(input("How many recent emails would you like to collect receipts from: "))
+    
+    return user, receipt_email, num_messages
+
 def main():
 
-    get_messages_from_sender()
+    user, receipt_email, num_messages = user_input()
+    get_messages_from_sender(num_messages, receipt_email)
 
     os.chdir("./")
     for file in glob.glob("*.pdf"):
@@ -34,13 +41,16 @@ def main():
                     invoice = input("Invoice Number: ")
                 if date is None:
                     date = input("Date (MM/DD/YY): ")
+            else:
+                invoice, date = bagel_invoice, bagel_date
                 
-        date_pattern = r'(\d{1,2}/\d{2}/\d{2}|\d{1,2}/\d{2}/\d{4})'
-
-        date = re.sub(date_pattern, replace_date, date)
+        date = replace_date(date)
         os.remove(image)
         new_file_name = date + "-" + invoice + ".pdf"
         os.rename(file, new_file_name)
+
+    input("Review the titles of the pdfs and click any button when ready to send")
+
     send_message()
 
     for file in glob.glob("*.pdf"):

@@ -3,7 +3,6 @@ import re, json
 import pytesseract
 
 def check_for_info(text: str, data: map, type: str):
-
     # Define the regex pattern
     pattern = data[type + '_regex_invoice']
 
