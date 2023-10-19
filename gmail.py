@@ -63,14 +63,14 @@ def get_messages_from_sender(num_messages, sender_email="zlaclair@ucsc.edu"):
         print(f"An error occurred: {e}")
 
 
-def send_message():
+def send_message(to_user, from_user, subject="Perk Invoices"):
     try:
         service = build('gmail', 'v1', credentials=creds)
 
         message = EmailMessage()
-        message['To'] = "zlaclair@ucsc.edu"
-        message['From'] = "awaghili@ucsc.edu"
-        message['Subject'] = "Renamed Files"
+        message['To'] = to_user
+        message['From'] = from_user
+        message['Subject'] = subject
 
         for file in glob.glob("*.pdf"):
             with open(file, 'rb') as content_file:
