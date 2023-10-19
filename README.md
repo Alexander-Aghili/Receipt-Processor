@@ -45,6 +45,8 @@ Before using the Receipt Scanner, ensure that you have the following prerequisit
    cd receipt_processor
    ```
 
+3. Download Google Cloud credential.json for OAuth 2
+
 
 ## Configuration
 
